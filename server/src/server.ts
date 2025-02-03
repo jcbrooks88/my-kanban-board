@@ -2,20 +2,28 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
+import path from 'path';
 import routes from './routes/index.js';
 import { sequelize } from './models/index.js';
+
+// Workaround for __dirname in ES Modules
+const __dirname = new URL('.', import.meta.url).pathname;
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 const forceDatabaseRefresh = process.env.FORCE_DB_REFRESH === 'true';
 
-
 // Log environment variables (for debugging)
+if (!process.env.DATABASE_URL || !process.env.JWT_SECRET) {
+  console.error("❌ Missing environment variables");
+  process.exit(1); // Exit if essential variables are missing
+}
+
 console.log("Database URL:", process.env.DATABASE_URL ? "Loaded ✅" : "❌ Not Found");
 console.log("JWT Secret:", process.env.JWT_SECRET ? "Loaded ✅" : "❌ Not Found");
 
 // Serves static files from the client dist folder
-app.use(express.static('../../client/dist'));
+app.use(express.static(path.join(__dirname, '../../client/dist')));
 
 app.use(express.json());
 app.use(routes);
@@ -32,3 +40,4 @@ sequelize.sync({ force: forceDatabaseRefresh })
     console.error("❌ Database connection failed:", error);
     process.exit(1); // Exit if the database doesn't connect
   });
+
