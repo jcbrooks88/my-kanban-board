@@ -9,12 +9,13 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const forceDatabaseRefresh = process.env.FORCE_DB_REFRESH === 'true';
 
+
 // Log environment variables (for debugging)
 console.log("Database URL:", process.env.DATABASE_URL ? "Loaded ✅" : "❌ Not Found");
 console.log("JWT Secret:", process.env.JWT_SECRET ? "Loaded ✅" : "❌ Not Found");
 
 // Serves static files from the client dist folder
-app.use(express.static('../client/dist'));
+app.use(express.static('../../client/dist'));
 
 app.use(express.json());
 app.use(routes);
