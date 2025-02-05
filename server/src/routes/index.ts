@@ -10,4 +10,3 @@ router.use('/auth', authRoutes); // No authentication needed for auth routes
 router.use('/api', authenticateToken, apiRoutes); // Add authentication to the API routes
 
 export default router;
-

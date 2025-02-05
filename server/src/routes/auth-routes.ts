@@ -1,8 +1,13 @@
 import { Router, Request, Response } from 'express';
-import { User } from '../models/user.js'; // Ensure this is the correct path
+import { User } from '../models/user.js';
+ // Ensure the path to your User model is correct
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
 
+dotenv.config();  // Load environment variables
+
+// Login route handler
 export const login = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { username, password } = req.body;
@@ -21,7 +26,7 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
     // Create a JWT token if the credentials are correct
     const payload = { username: user.username }; // You can add more user info to the payload if needed
-    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '1h' }); // Adjust expiration time as needed
+    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
     // Send the token as the response
     return res.json({ message: 'Login successful', token });
@@ -37,5 +42,3 @@ const router = Router();
 router.post('/login', login);
 
 export default router;
-
-

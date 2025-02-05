@@ -1,3 +1,4 @@
+
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -31,8 +32,3 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
     next(); // Proceed to the next middleware
   });
 };
-
-
-
-
-
